@@ -41,15 +41,20 @@ void main() {
           {'code': 200, 'message': 'OK'},
         ],
         'result': [
-          {'success': true, 'results': [1, 2, 3]},
+          {
+            'success': true,
+            'results': [1, 2, 3],
+          },
         ],
       };
       final mockResponse = http.Response(jsonEncode(mockJson), 200);
-      when(() => mockHttpPost(
-        any(),
-        headers: any(named: 'headers'),
-        body: any(named: 'body'),
-      )).thenAnswer((_) async => mockResponse);
+      when(
+        () => mockHttpPost(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
 
       final response = await client.query('SELECT * FROM table');
       expect(response.success, true);
@@ -60,11 +65,13 @@ void main() {
 
     test('query throws on non-200 response', () async {
       final mockResponse = http.Response('error', 500);
-      when(() => mockHttpPost(
-        any(),
-        headers: any(named: 'headers'),
-        body: any(named: 'body'),
-      )).thenAnswer((_) async => mockResponse);
+      when(
+        () => mockHttpPost(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
 
       expect(
         () => client.query('SELECT * FROM table'),

@@ -21,6 +21,7 @@ class D1ResponseInfo {
 
   /// The info code.
   final int code;
+
   /// The info message.
   final String message;
 }

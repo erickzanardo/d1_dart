@@ -4,7 +4,7 @@
 class D1QueryResult {
   /// {@macro d1_query_result}
   D1QueryResult({
-    required this.success, 
+    required this.success,
     required this.results,
   });
 
@@ -18,6 +18,7 @@ class D1QueryResult {
 
   /// Whether the query was successful.
   final bool success;
+
   /// The results of the query.
   final List<dynamic> results;
 }

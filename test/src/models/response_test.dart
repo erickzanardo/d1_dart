@@ -29,7 +29,10 @@ void main() {
           {'code': 200, 'message': 'OK'},
         ],
         'result': [
-          {'success': true, 'results': [1, 2, 3]},
+          {
+            'success': true,
+            'results': [1, 2, 3],
+          },
         ],
       };
       final response = D1Response.fromJson(json);

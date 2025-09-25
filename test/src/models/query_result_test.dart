@@ -13,7 +13,10 @@ void main() {
     });
 
     test('deserializes from JSON', () {
-      final json = {'success': true, 'results': [1, 2, 3]};
+      final json = {
+        'success': true,
+        'results': [1, 2, 3],
+      };
       final result = D1QueryResult.fromJson(json);
       expect(result.success, true);
       expect(result.results, [1, 2, 3]);
