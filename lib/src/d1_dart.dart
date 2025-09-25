@@ -45,8 +45,35 @@ class D1Client {
     String sql, {
     List<String> params = const [],
   }) async {
+    return _executeQuery<D1Response>(
+      sql,
+      params: params,
+      endpoint: 'query',
+      fromJson: D1Response.fromJson,
+    );
+  }
+
+  /// Executes a SQL query against the D1 database using the /raw endpoint.
+  Future<D1RawResponse> raw(
+    String sql, {
+    List<String> params = const [],
+  }) async {
+    return _executeQuery<D1RawResponse>(
+      sql,
+      params: params,
+      endpoint: 'raw',
+      fromJson: D1RawResponse.fromJson,
+    );
+  }
+
+  Future<T> _executeQuery<T>(
+    String sql, {
+    required String endpoint,
+    required T Function(Map<String, dynamic>) fromJson,
+    List<String> params = const [],
+  }) async {
     final uri = Uri.parse(
-      '$_baseUrl$_apiVersion/accounts/$_accountId/d1/database/$_databaseName/query',
+      '$_baseUrl$_apiVersion/accounts/$_accountId/d1/database/$_databaseName/$endpoint',
     );
     final headers = {
       'Authorization': 'Bearer $_cloudflareApiKey',
@@ -68,6 +95,6 @@ class D1Client {
       );
     }
     final jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
-    return D1Response.fromJson(jsonResponse);
+    return fromJson(jsonResponse);
   }
 }

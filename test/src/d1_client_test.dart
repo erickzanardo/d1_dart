@@ -78,5 +78,71 @@ void main() {
         throwsA(isA<Exception>()),
       );
     });
+
+    test('raw returns parsed D1Response', () async {
+      final mockJson = {
+        'success': true,
+        'errors': [
+          {'code': 404, 'message': 'Not Found'},
+        ],
+        'messages': [
+          {'code': 200, 'message': 'OK'},
+        ],
+        'result': [
+          {
+            'success': true,
+            'results': {
+              'columns': ['id', 'name'],
+              'rows': [4, 'Alice'],
+            },
+          },
+          {
+            'success': true,
+            'results': {
+              'columns': ['id', 'name'],
+              'rows': [5, 'Bob'],
+            },
+          },
+          {
+            'success': true,
+            'results': {
+              'columns': ['id', 'name'],
+              'rows': [6, 'Charlie'],
+            },
+          },
+        ],
+      };
+      final mockResponse = http.Response(jsonEncode(mockJson), 200);
+      when(
+        () => mockHttpPost(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      final response = await client.raw('SELECT * FROM table');
+      expect(response.success, true);
+      expect(response.errors.first.code, 404);
+      expect(response.messages.first.code, 200);
+      expect(response.result.first.columns, ['id', 'name']);
+      expect(response.result.first.rows, [4, 'Alice']);
+    });
+
+    test('raw throws on non-200 response', () async {
+      final mockResponse = http.Response('error', 500);
+      when(
+        () => mockHttpPost(
+          any(),
+          headers: any(named: 'headers'),
+          body: any(named: 'body'),
+        ),
+      ).thenAnswer((_) async => mockResponse);
+
+      expect(
+        () => client.raw('SELECT * FROM table'),
+        throwsA(isA<Exception>()),
+      );
+    });
   });
 }
