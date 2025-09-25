@@ -1,0 +1,14 @@
+name: d1_dart
+description: A Dart client arounds Cloudflare D1 Database Rest API
+version: 0.0.1
+repository: https://github.com/erickzanardo/d1_dart
+
+environment:
+  sdk: ^3.9.0
+
+dev_dependencies:
+  mocktail: ^1.0.4
+  test: ^1.26.3
+  very_good_analysis: ^10.0.0
+dependencies:
+  http: ^1.5.0
